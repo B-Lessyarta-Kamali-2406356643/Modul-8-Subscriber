@@ -20,3 +20,27 @@ One possible improvement in the code is to handle errors from `publish_event` an
 ![Three Subscribers Console](images/three-subscribers-console.png)
 
 ![Three Subscribers RabbitMQ](images/three-subscribers-rabbitmq.png)
+
+# Bonus
+## Simulating Slow Subscriber
+
+In this experiment, I made the subscriber process messages more slowly by adding a delay before each message is processed. Then, I ran the publisher several times quickly.
+
+Because the publisher sends messages faster than the subscriber can consume them, the number of queued messages in RabbitMQ temporarily increases. This can be seen from the RabbitMQ queue graph, where the queued messages rise before being consumed gradually by the subscriber.
+
+![Slow Subscriber Queue](images/slow-subscriber-queue.png)
+The terminal output also shows that the subscriber receives the messages one by one with a delay, while the publisher can still send messages to RabbitMQ independently.
+
+![Slow Subscriber Console](images/slow-subscriber-console.png)
+## Running Multiple Subscribers
+
+In this experiment, I ran at least three subscribers at the same time. All subscribers are connected to the same RabbitMQ broker and consume messages from the same queue.
+
+RabbitMQ distributes the messages among the available subscribers. This makes message processing faster because the workload is shared across multiple consumers.
+
+The RabbitMQ dashboard shows multiple consumers connected to the queue, which means that the broker successfully distributes messages to more than one subscriber.
+
+![Three Subscribers RabbitMQ](images/three-subscribers-rabbitmq.png)
+The terminal output shows that the messages are received by the active subscribers. This proves that the broker does not depend on only one subscriber to process all events.
+
+![Three Subscribers Console](images/three-subscribers-console-aws.png)
